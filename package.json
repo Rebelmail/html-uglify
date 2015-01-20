@@ -1,10 +1,10 @@
 {
-  "name": "html-uglifier",
-  "version": "0.0.1",
+  "name": "html-uglify",
+  "version": "0.0.2",
   "description": "Uglifies an HTML file and its associated CSS for compression. Great for HTML emails!",
   "main": "lib/main.js",
-  "scripts":{
-    "test":"node test.js"
+  "scripts": {
+    "test": "node test.js"
   },
   "keywords": [
     "html",
@@ -26,5 +26,13 @@
   "bin": {
     "html-uglify": "bin/html-uglify"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RebelMail/html-uglify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RebelMail/html-uglify/issues"
+  },
+  "homepage": "https://github.com/RebelMail/html-uglify"
 }
