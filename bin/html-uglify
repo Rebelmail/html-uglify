@@ -9,17 +9,21 @@ program
 	.option("-o, --output <path>", "Path for Outputed HTML file")
 	.parse(process.argv);
 
-fs.readFile(program.html, function(e,html){
-	if (e){
+// console.log(program.html);
+fs.readFile(program.html, 'utf8', function (err, html) {
+	// console.log('html', html);
+	// console.log('e', err);
+	if (err){
 		var f = program.html;
 	} else {
 		var f = html;
 	};
-	uglifier.uglify(program.html, function(e,r){
+	// console.log(f);
+	uglifier.uglify(f, function(e,r){
 		if (e) return console.log(e);
 		console.log(r.map);
 		if (program.output){
-			return fs.writeFile(r.html);
+			return fs.writeFile(program.output, r.html);
 		} else {
 			return console.log(r.html);
 		};
