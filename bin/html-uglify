@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+
+var uglifier = require('../lib/main.js'),
+	program = require('commander'),
+	fs = require('fs');
+
+program
+	.option("-i, --html <path>", "Input HTML File")
+	.option("-o, --output <path>", "Path for Outputed HTML file")
+	.parse(process.argv);
+
+fs.readFile(program.html, function(e,html){
+	if (e){
+		var f = program.html;
+	} else {
+		var f = html;
+	};
+	uglifier.uglify(program.html, function(e,r){
+		if (e) return console.log(e);
+		console.log(r.map);
+		if (program.output){
+			return fs.writeFile(r.html);
+		} else {
+			return console.log(r.html);
+		};
+	});
+});
+
