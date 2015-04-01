@@ -4,7 +4,7 @@
   "description": "Uglifies an HTML file and its associated CSS for compression. Great for HTML emails!",
   "main": "lib/main.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "mocha test/main.js"
   },
   "keywords": [
     "html",
@@ -26,7 +26,10 @@
   "bin": {
     "html-uglify": "bin/html-uglify"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^2.2.0",
+    "mocha": "^2.2.1"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/RebelMail/html-uglify.git"
