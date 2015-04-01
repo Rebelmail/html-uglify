@@ -20,6 +20,17 @@ describe('Uglify', function() {
       assert.equal(Uglify.access.classmapper, 0);
     });
   });
+
+  describe('uglify', function() {
+    it('uglifies style and html', function() {
+      Uglify.uglify("<style>.demo_class#andID{color:red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglifier</div>", function(err, result) {
+        assert.equal(result.html, '<style>.xz#xz {\n  color: red;\n}</style><div class="xz" id="xz">Welcome to HTML Uglifier</div>');
+        //console.log(result.map);
+        //console.log(result.html);
+      });
+    });
+
+  });
 });
 
 
