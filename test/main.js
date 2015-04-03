@@ -23,14 +23,6 @@ describe('Uglify', function() {
     });
   });
 
-  describe('#generateId', function() {
-    it('can generate an id', function() {
-      var original = 'header';
-      //Uglify.mungeId(original);
-
-    });
-  });
-
   describe('#styles', function() {
     it('returns 2 style elements', function() {
       var html = '<style>.some-css{};</style><style>.other-css{};</style>';
@@ -63,10 +55,6 @@ describe('Uglify', function() {
   });
 
   describe('#rewriteElements', function() {
-    it('rewrites multiple nested ids', function() {
-      var html = '<h1 id="header">Header <strong id="strong"><span id="span">1</span></strong></h1><label for="something">Something</label><label for="null">null</label><div class="some classes">Some Classes</div>';
-      var results = Uglify.rewriteElements(html);
-    });
     it('rewrites an id', function() {
       var html = '<h1 id="abe">Header</h1>';
       var results = Uglify.rewriteElements(html);
@@ -86,6 +74,11 @@ describe('Uglify', function() {
       var html = '<label for="abe">Label</h1>';
       var results = Uglify.rewriteElements(html);
       assert.equal(results, '<label for="xz">Label</label>');
+    });
+    it('rewrites multiple nested ids, classes, and fors', function() {
+      var html = '<h1 id="header">Header <strong id="strong"><span id="span">1</span></strong></h1><label for="something">Something</label><label for="null">null</label><div class="some classes">Some Classes</div>';
+      var results = Uglify.rewriteElements(html);
+      assert.equal(results, '<h1 id="xz">Header <strong id="wk"><span id="en">1</span></strong></h1><label for="km">Something</label><label for="dj">null</label><div class="yw qr">Some Classes</div>');
     });
   });
 
