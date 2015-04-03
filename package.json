@@ -21,7 +21,8 @@
     "cheerio": "^0.18.0",
     "commander": "^2.6.0",
     "css": "^2.1.0",
-    "hashids": "^1.0.1"
+    "hashids": "^1.0.1",
+    "lodash": "^3.6.0"
   },
   "bin": {
     "html-uglify": "bin/html-uglify"
