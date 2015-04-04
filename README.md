@@ -8,6 +8,8 @@ Uglify your HTML and CSS for purposes of compression and obfuscation. Great for 
 [![NPM version](https://badge.fury.io/js/html-uglify.png)](http://badge.fury.io/js/html-uglify)
 
 ```javascript
+var HtmlUglify = require('html-uglify');
+var htmlUglify = new HtmlUglify({salt: 'your-custom-salt'});
 var uglified = htmlUglify.process(htmlString);
 ```
 
@@ -24,7 +26,8 @@ There is one command. It mirrors [autoprefixer-core](https://github.com/postcss/
 You pass an html string to `.process` and it returns the uglified html.
 
 ```javascript
-var htmlUglify = require('html-uglify');
+var HtmlUglify = require('html-uglify');
+var htmlUglify = new HtmlUglify({salt: 'your-custom-salt'});
 var htmlString = "<html><head><style>.some-class { color: red; }</style></head><body><h1 class='some-class'>Hello</h1></body></html>";
 
 var uglified = htmlUglify.process(htmlString);

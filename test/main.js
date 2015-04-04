@@ -1,6 +1,8 @@
 var assert = require('chai').assert;
 var cheerio = require('cheerio');
-var htmlUglify = require('../lib/main.js');
+var HtmlUglify = require('../lib/main.js');
+
+var htmlUglify = new HtmlUglify();
 
 describe('htmlUglify', function() {
   describe('#rewriteCss', function() {
@@ -139,6 +141,11 @@ describe('htmlUglify', function() {
     it('uglifies style and html', function() {
       var html = htmlUglify.process("<style>.demo_class#andID{color: red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglify</div>");
       assert.equal(html, '<style>.wk#xz{color:red;}</style><div class="wk" id="xz">Welcome to HTML Uglify</div>');
+    });
+    it('uglifies differently with a different salt', function() {
+      var htmlUglify = new HtmlUglify({salt: 'other'});
+      var html = htmlUglify.process("<style>.demo_class#andID{color: red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglify</div>");
+      assert.equal(html, '<style>.nx#vy{color:red;}</style><div class="nx" id="vy">Welcome to HTML Uglify</div>');
     });
   });
 });
