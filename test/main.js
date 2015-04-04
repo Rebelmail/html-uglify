@@ -155,14 +155,10 @@ describe('Uglify', function() {
     });
   });
 
-  describe('uglify', function() {
+  describe('#uglify', function() {
     it('uglifies style and html', function() {
-      Uglify.uglify("<style>.demo_class#andID{color:red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglifier</div>", function(err, result) {
-        assert.equal(result.html, '<style>.demo_class#andID {\n  color: red;\n}</style><div class="wk" id="xz">Welcome to HTML Uglifier</div>');
-        //assert.equal(result.html, '<style>.xz#xz {\n  color: red;\n}</style><div class="xz" id="xz">Welcome to HTML Uglifier</div>');
-        //console.log(result.map);
-        //console.log(result.html);
-      });
+      var html = Uglify.uglify("<style>.demo_class#andID{color: red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglifier</div>");
+        assert.equal(html, '<style>.wk#xz{color:red;}</style><div class="wk" id="xz">Welcome to HTML Uglifier</div>');
     });
   });
 });
