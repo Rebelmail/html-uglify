@@ -147,6 +147,21 @@ describe('htmlUglify', function() {
       var html = htmlUglify.process("<style>.demo_class#andID{color: red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglify</div>");
       assert.equal(html, '<style>.nx#vy{color:red;}</style><div class="nx" id="vy">Welcome to HTML Uglify</div>');
     });
+    it('uglifies media query with no name', function() {
+      var htmlUglify = new HtmlUglify();
+      var html = htmlUglify.process("<style>@media {.media{ color: red; }}</style><div class='media'>media</div>");
+      assert.equal(html, '<style>@media {.xz{color:red;}}</style><div class="xz">media</div>');
+    });
+    it('uglifies media queries inside of media queries', function() {
+      var htmlUglify = new HtmlUglify();
+      var html = htmlUglify.process("<style>@media screen{@media screen{.media-nested{background:red;}}}</style><div class='media-nested'>media-nested</div>");
+      assert.equal(html, '<style>@media screen{@media screen{.xz{background:red;}}}</style><div class="xz">media-nested</div>');
+    });
+    it('uglifies media queries inside of media queries inside of media queries', function() {
+      var htmlUglify = new HtmlUglify();
+      var html = htmlUglify.process("<style>@media screen{@media screen{@media screen{.media-double-nested{background:red;}}}}</style><div class='media-double-nested'>media-double-nested</div>");
+      assert.equal(html, '<style>@media screen{@media screen{@media screen{.xz{background:red;}}}}</style><div class="xz">media-double-nested</div>');
+    });
   });
 });
 
