@@ -1,6 +1,6 @@
 {
   "name": "html-uglify",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Uglifies an HTML file and its associated CSS for compression. Great for HTML emails!",
   "main": "lib/main.js",
   "scripts": {
@@ -17,15 +17,10 @@
   "author": "Trever Faden (@trever)",
   "license": "ISC",
   "dependencies": {
-    "args": "0.0.3",
     "cheerio": "^0.18.0",
-    "commander": "^2.6.0",
     "css": "^2.1.0",
     "hashids": "^1.0.1",
     "lodash": "^3.6.0"
-  },
-  "bin": {
-    "html-uglify": "bin/html-uglify"
   },
   "devDependencies": {
     "chai": "^2.2.0",
