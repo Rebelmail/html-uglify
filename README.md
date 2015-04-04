@@ -2,7 +2,8 @@
 
 ![html-uglify](../master/html-uglify.png?raw=true)
 
-Uglify your HTML and CSS for purposes of compression and obfuscation. Great for HTML emails!
+Uglify your HTML and CSS for purposes of compression and obfuscation. 
+Great for HTML emails
 
 [![BuildStatus](https://travis-ci.org/RebelMail/html-uglify.png?branch=master)](https://travis-ci.org/RebelMail/html-uglify)
 [![NPM version](https://badge.fury.io/js/html-uglify.png)](http://badge.fury.io/js/html-uglify)
