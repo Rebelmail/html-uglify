@@ -22,8 +22,6 @@ npm install html-uglify --save
 
 ## Usage
 
-There is one command. It mirrors [autoprefixer-core](https://github.com/postcss/autoprefixer-core) API.
-
 You pass an html string to `.process` and it returns the uglified html.
 
 ```javascript
