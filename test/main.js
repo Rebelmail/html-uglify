@@ -11,56 +11,56 @@ describe('htmlUglify', function() {
       var html = '<style>#abe{ color: red; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>#xz{color:red;}</style>');
+      assert.equal(results, '<style>#xz{ color: red; }</style>');
     });
     it('does not rewrite an id given no lookups', function() {
       var lookups = { };
       var html = '<style>#abe{ color: red; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>#abe{color:red;}</style>');
+      assert.equal(results, '<style>#abe{ color: red; }</style>');
     });
     it('rewrites a label given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[for=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>label[for=ab]{color:blue;}</style>');
+      assert.equal(results, '<style>label[for=ab]{ color: blue; }</style>');
     });
     it('does not rewrite a label given no lookups', function() {
       var lookups = {};
       var html = '<style>label[for=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>label[for=email]{color:blue;}</style>');
+      assert.equal(results, '<style>label[for=email]{ color: blue; }</style>');
     });
     it('rewrites a label with parentheses given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[for="email"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>label[for="ab"]{color:blue;}</style>');
+      assert.equal(results, '<style>label[for="ab"]{ color: blue; }</style>');
     });
     it('rewrites an id= given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[id=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>label[id=ab]{color:blue;}</style>');
+      assert.equal(results, '<style>label[id=ab]{ color: blue; }</style>');
     });
     it('rewrites an id= without parentheses given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[id="email"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>label[id="ab"]{color:blue;}</style>');
+      assert.equal(results, '<style>label[id="ab"]{ color: blue; }</style>');
     });
     it('rewrites a class given lookups', function() {
       var lookups = { 'class=email': 'ab' };
       var html = '<style>label.email{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>label.ab{color:blue;}</style>');
+      assert.equal(results, '<style>label.ab{ color: blue; }</style>');
     });
     it('rewrites a class inside a form[] given lookups', function() {
       var lookups = { 'class=email': 'ab' };
@@ -75,7 +75,7 @@ describe('htmlUglify', function() {
       var html = '<style>@media screen and (max-width: 300px) { #abe{ color: red; } }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>@media screen and (max-width: 300px){#wz{color:red;}}</style>');
+      assert.equal(results, '<style>@media screen and (max-width: 300px) { #wz{ color: red; } }</style>');
     });
     it('rewrites nested css media queries', function() {
       var lookups = { 'id=abe': 'wz' };
@@ -83,7 +83,7 @@ describe('htmlUglify', function() {
       var html = '<style>@media { @media screen and (max-width: 300px) { #abe{ color: red; } } }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>@media {@media screen and (max-width: 300px){#wz{color:red;}}}</style>');
+      assert.equal(results, '<style>@media { @media screen and (max-width: 300px) { #wz{ color: red; } } }</style>');
     });
   });
 
@@ -147,17 +147,17 @@ describe('htmlUglify', function() {
   describe('#uglify', function() {
     it('uglifies style and html', function() {
       var html = htmlUglify.process("<style>.demo_class#andID{color: red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglify</div>");
-      assert.equal(html, '<style>.wk#xz{color:red;}</style><div class="wk" id="xz">Welcome to HTML Uglify</div>');
+      assert.equal(html, '<style>.wk#xz{color: red}</style><div class="wk" id="xz">Welcome to HTML Uglify</div>');
     });
     it('uglifies differently with a different salt', function() {
       var htmlUglify = new HtmlUglify({salt: 'other'});
       var html = htmlUglify.process("<style>.demo_class#andID{color: red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglify</div>");
-      assert.equal(html, '<style>.nx#vy{color:red;}</style><div class="nx" id="vy">Welcome to HTML Uglify</div>');
+      assert.equal(html, '<style>.nx#vy{color: red}</style><div class="nx" id="vy">Welcome to HTML Uglify</div>');
     });
     it('uglifies media query with no name', function() {
       var htmlUglify = new HtmlUglify();
       var html = htmlUglify.process("<style>@media {.media{ color: red; }}</style><div class='media'>media</div>");
-      assert.equal(html, '<style>@media {.xz{color:red;}}</style><div class="xz">media</div>');
+      assert.equal(html, '<style>@media {.xz{ color: red; }}</style><div class="xz">media</div>');
     });
     it('uglifies media queries inside of media queries', function() {
       var htmlUglify = new HtmlUglify();
@@ -171,5 +171,3 @@ describe('htmlUglify', function() {
     });
   });
 });
-
-
