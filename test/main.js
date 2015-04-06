@@ -85,6 +85,12 @@ describe('htmlUglify', function() {
       var results = htmlUglify.rewriteCss($, lookups).html();
       assert.equal(results, '<style>@media { @media screen and (max-width: 300px) { #wz{ color: red; } } }</style>');
     });
+    it('handles malformed syntax', function() {
+      var html = '<style>@media{.media{background: red}</style>';
+      var $ = cheerio.load(html);
+      var results = htmlUglify.rewriteCss($).html();
+      assert.equal(results, '<style>@media{.media{background: red}}</style>');
+    });
   });
 
   describe('#rewriteElements', function() {
