@@ -69,6 +69,13 @@ describe('htmlUglify', function() {
       var results = htmlUglify.rewriteCss($, lookups).html();
       assert.equal(results, '<style>label.ab{ color: blue; }</style>');
     });
+    it('rewrites a class= given lookups', function() {
+      var lookups = { 'class=email': 'ab' };
+      var html = '<style>form [class=email] { color: blue; }</style>';
+      var $ = cheerio.load(html);
+      var results = htmlUglify.rewriteCss($, lookups).html();
+      assert.equal(results, "<style>form [class='ab'] { color: blue; }</style>");
+    });
     it('rewrites multi-selector rule', function() {
       var lookups = { 'class=email': 'ab' };
       var html = '<style>label.email, a.email { color: blue; }</style>';
