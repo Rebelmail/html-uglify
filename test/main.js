@@ -1,10 +1,12 @@
+'use strict';
+
 var assert = require('chai').assert;
 var cheerio = require('cheerio');
 var HtmlUglify = require('../lib/main.js');
 
 var htmlUglify = new HtmlUglify();
 
-describe('htmlUglify', function() {
+describe('HtmlUglify', function() {
   describe('#rewriteCss', function() {
     it('rewrites an id given lookups', function() {
       var lookups = { 'id=abe': 'Yj' };
@@ -170,7 +172,7 @@ describe('htmlUglify', function() {
     });
   });
 
-  describe('#uglify', function() {
+  describe('#process', function() {
     it('uglifies style and html', function() {
       var html = htmlUglify.process("<style>.demo_class#andID{color: red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglify</div>");
       assert.equal(html, '<style>.KE#Yj{color: red}</style><div class="KE" id="Yj">Welcome to HTML Uglify</div>');
