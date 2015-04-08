@@ -20,44 +20,51 @@ describe('htmlUglify', function() {
       var results = htmlUglify.rewriteCss($, lookups).html();
       assert.equal(results, '<style>#abe{ color: red; }</style>');
     });
-    it('rewrites a label given lookups', function() {
+    it('rewrites a for= given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[for=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>label[for=ab]{ color: blue; }</style>');
+      assert.equal(results, "<style>label[for='ab']{ color: blue; }</style>");
     });
-    it('does not rewrite a label given no lookups', function() {
+    it('does not rewrite a for= given no lookups', function() {
       var lookups = {};
       var html = '<style>label[for=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>label[for=email]{ color: blue; }</style>');
+      assert.equal(results, "<style>label[for='email']{ color: blue; }</style>");
     });
-    it('rewrites a label with parentheses given lookups', function() {
+    it('rewrites a for= with quotes given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[for="email"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>label[for="ab"]{ color: blue; }</style>');
+      assert.equal(results, "<style>label[for='ab']{ color: blue; }</style>");
     });
     it('rewrites an id= given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[id=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>label[id=ab]{ color: blue; }</style>');
+      assert.equal(results, '<style>label#ab{ color: blue; }</style>');
     });
-    it('rewrites an id= without parentheses given lookups', function() {
+    it('rewrites an id= with quotes given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[id="email"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
-      assert.equal(results, '<style>label[id="ab"]{ color: blue; }</style>');
+      assert.equal(results, '<style>label#ab{ color: blue; }</style>');
     });
     it('rewrites a class given lookups', function() {
       var lookups = { 'class=email': 'ab' };
       var html = '<style>label.email{ color: blue; }</style>';
+      var $ = cheerio.load(html);
+      var results = htmlUglify.rewriteCss($, lookups).html();
+      assert.equal(results, '<style>label.ab{ color: blue; }</style>');
+    });
+    it('rewrites a class with the same name as the element', function() {
+      var lookups = { 'class=label': 'ab' };
+      var html = '<style>label.label{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteCss($, lookups).html();
       assert.equal(results, '<style>label.ab{ color: blue; }</style>');
@@ -106,11 +113,11 @@ describe('htmlUglify', function() {
       var results = htmlUglify.rewriteElements($).html();
       assert.equal(results, '<h1 class="xz">Header</h1>');
     });
-    it('rewrites a class', function() {
-      var html = '<h1 class="abe">Header</h1>';
+    it('rewrites a multiple classes', function() {
+      var html = '<h1 class="foo bar">Header</h1>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteElements($).html();
-      assert.equal(results, '<h1 class="xz">Header</h1>');
+      assert.equal(results, '<h1 class="xz wk">Header</h1>');
     });
     it('rewrites a for', function() {
       var html = '<label for="abe">Label</h1>';
