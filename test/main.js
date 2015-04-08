@@ -119,6 +119,12 @@ describe('htmlUglify', function() {
       var results = htmlUglify.rewriteElements($).html();
       assert.equal(results, '<h1 class="xz wk">Header</h1>');
     });
+    it('rewrites a multiple classes with more than one space between them', function() {
+      var html = '<h1 class="foo   bar">Header</h1>';
+      var $ = cheerio.load(html);
+      var results = htmlUglify.rewriteElements($).html();
+      assert.equal(results, '<h1 class="xz wk">Header</h1>');
+    });
     it('rewrites a for', function() {
       var html = '<label for="abe">Label</h1>';
       var $ = cheerio.load(html);
