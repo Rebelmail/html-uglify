@@ -1,6 +1,6 @@
 {
   "name": "html-uglify",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Uglifies an HTML file and its associated CSS for compression. Great for HTML emails!",
   "main": "lib/main.js",
   "scripts": {
