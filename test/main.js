@@ -2,87 +2,87 @@
 
 var assert = require('chai').assert;
 var cheerio = require('cheerio');
-var HtmlUglify = require('../lib/main.js');
+var HTMLUglify = require('../lib/main.js');
 
-var htmlUglify = new HtmlUglify();
+var htmlUglify = new HTMLUglify();
 
-describe('HtmlUglify', function() {
-  describe('#rewriteCss', function() {
+describe('HTMLUglify', function() {
+  describe('#rewriteStyles', function() {
     it('rewrites an id given lookups', function() {
       var lookups = { 'id=abe': 'xz' };
       var html = '<style>#abe{ color: red; }</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($, lookups).html();
+      var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>#xz{ color: red; }</style>');
     });
     it('does not rewrite an id given no lookups', function() {
       var lookups = { };
       var html = '<style>#abe{ color: red; }</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($, lookups).html();
+      var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>#abe{ color: red; }</style>');
     });
     it('rewrites a for= given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[for=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($, lookups).html();
+      var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, "<style>label[for='ab']{ color: blue; }</style>");
     });
     it('does not rewrite a for= given no lookups', function() {
       var lookups = {};
       var html = '<style>label[for=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($, lookups).html();
+      var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, "<style>label[for='email']{ color: blue; }</style>");
     });
     it('rewrites a for= with quotes given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[for="email"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($, lookups).html();
+      var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, "<style>label[for='ab']{ color: blue; }</style>");
     });
     it('rewrites an id= given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[id=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($, lookups).html();
+      var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label#ab{ color: blue; }</style>');
     });
     it('rewrites an id= with quotes given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[id="email"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($, lookups).html();
+      var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label#ab{ color: blue; }</style>');
     });
     it('rewrites a class given lookups', function() {
       var lookups = { 'class=email': 'ab' };
       var html = '<style>label.email{ color: blue; }</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($, lookups).html();
+      var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label.ab{ color: blue; }</style>');
     });
     it('rewrites a class with the same name as the element', function() {
       var lookups = { 'class=label': 'ab' };
       var html = '<style>label.label{ color: blue; }</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($, lookups).html();
+      var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label.ab{ color: blue; }</style>');
     });
     it('rewrites a class= given lookups', function() {
       var lookups = { 'class=email': 'ab' };
       var html = '<style>form [class=email] { color: blue; }</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($, lookups).html();
+      var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, "<style>form [class='ab'] { color: blue; }</style>");
     });
     it('rewrites multi-selector rule', function() {
       var lookups = { 'class=email': 'ab' };
       var html = '<style>label.email, a.email { color: blue; }</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($, lookups).html();
+      var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label.ab, a.ab { color: blue; }</style>');
     });
     it('rewrites css media queries', function() {
@@ -90,7 +90,7 @@ describe('HtmlUglify', function() {
 
       var html = '<style>@media screen and (max-width: 300px) { #abe{ color: red; } }</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($, lookups).html();
+      var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>@media screen and (max-width: 300px) { #wz{ color: red; } }</style>');
     });
     it('rewrites nested css media queries', function() {
@@ -98,13 +98,13 @@ describe('HtmlUglify', function() {
 
       var html = '<style>@media { @media screen and (max-width: 300px) { #abe{ color: red; } } }</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($, lookups).html();
+      var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>@media { @media screen and (max-width: 300px) { #wz{ color: red; } } }</style>');
     });
     it('handles malformed syntax', function() {
       var html = '<style>@media{.media{background: red}</style>';
       var $ = cheerio.load(html);
-      var results = htmlUglify.rewriteCss($).html();
+      var results = htmlUglify.rewriteStyles($).html();
       assert.equal(results, '<style>@media{.media{background: red}}</style>');
     });
   });
@@ -178,22 +178,22 @@ describe('HtmlUglify', function() {
       assert.equal(html, '<style>.wk#xz{color: red}</style><div class="wk" id="xz">Welcome to HTML Uglify</div>');
     });
     it('uglifies differently with a different salt', function() {
-      var htmlUglify = new HtmlUglify({salt: 'other'});
+      var htmlUglify = new HTMLUglify({salt: 'other'});
       var html = htmlUglify.process("<style>.demo_class#andID{color: red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglify</div>");
       assert.equal(html, '<style>.nx#vy{color: red}</style><div class="nx" id="vy">Welcome to HTML Uglify</div>');
     });
     it('uglifies media query with no name', function() {
-      var htmlUglify = new HtmlUglify();
+      var htmlUglify = new HTMLUglify();
       var html = htmlUglify.process("<style>@media {.media{ color: red; }}</style><div class='media'>media</div>");
       assert.equal(html, '<style>@media {.xz{ color: red; }}</style><div class="xz">media</div>');
     });
     it('uglifies media queries inside of media queries', function() {
-      var htmlUglify = new HtmlUglify();
+      var htmlUglify = new HTMLUglify();
       var html = htmlUglify.process("<style>@media screen{@media screen{.media-nested{background:red;}}}</style><div class='media-nested'>media-nested</div>");
       assert.equal(html, '<style>@media screen{@media screen{.xz{background:red;}}}</style><div class="xz">media-nested</div>');
     });
     it('uglifies media queries inside of media queries inside of media queries', function() {
-      var htmlUglify = new HtmlUglify();
+      var htmlUglify = new HTMLUglify();
       var html = htmlUglify.process("<style>@media screen{@media screen{@media screen{.media-double-nested{background:red;}}}}</style><div class='media-double-nested'>media-double-nested</div>");
       assert.equal(html, '<style>@media screen{@media screen{@media screen{.xz{background:red;}}}}</style><div class="xz">media-double-nested</div>');
     });
