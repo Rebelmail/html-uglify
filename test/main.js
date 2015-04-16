@@ -197,5 +197,12 @@ describe('HTMLUglify', function() {
       var html = htmlUglify.process("<style>@media screen{@media screen{@media screen{.media-double-nested{background:red;}}}}</style><div class='media-double-nested'>media-double-nested</div>");
       assert.equal(html, '<style>@media screen{@media screen{@media screen{.xz{background:red;}}}}</style><div class="xz">media-double-nested</div>');
     });
+    it('uglifies with whitelisting for ids and classes', function() {
+      var whitelist = ['#noform', '.withform'];
+      var htmlUglify = new HTMLUglify({whitelist: whitelist});
+      var html = htmlUglify.process("<style>#noform { color: red; } .withform{ color: red } #other{ color: red; }</style><div id='noform' class='noform'>noform</div><div class='withform'>withform</div><div id='other'>other</div>");
+      assert.equal(html, '<style>#noform { color: red; } .withform{ color: red } #xz{ color: red; }</style><div id="noform" class="wk">noform</div><div class="withform">withform</div><div id="xz">other</div>');
+    });
+
   });
 });
