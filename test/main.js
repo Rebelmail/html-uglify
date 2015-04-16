@@ -7,6 +7,28 @@ var HTMLUglify = require('../lib/main.js');
 var htmlUglify = new HTMLUglify();
 
 describe('HTMLUglify', function() {
+  describe('#isWhitelisted', function() {
+    it('returns true if id is in whitelist', function() {
+      var whitelist = ['#theid'];
+      var htmlUglify = new HTMLUglify({whitelist: whitelist});
+      var whitelisted = htmlUglify.isWhitelisted('id', 'theid')
+      assert.isTrue(whitelisted);
+    });
+
+    it('returns false if id is in the whitelist but only checking for classes', function() {
+      var whitelist = ['#theid'];
+      var htmlUglify = new HTMLUglify({whitelist: whitelist});
+      var whitelisted = htmlUglify.isWhitelisted('class', 'theid')
+      assert.isFalse(whitelisted);
+    });
+
+    it('returns true if class is in whitelist', function() {
+      var whitelist = ['.theid'];
+      var htmlUglify = new HTMLUglify({whitelist: whitelist});
+      var whitelisted = htmlUglify.isWhitelisted('class', 'theid')
+      assert.isTrue(whitelisted);
+    });
+  });
   describe('#rewriteStyles', function() {
     it('rewrites an id given lookups', function() {
       var lookups = { 'id=abe': 'xz' };
