@@ -4,7 +4,7 @@ var assert = require('chai').assert;
 var cheerio = require('cheerio');
 var HTMLUglify = require('../lib/main.js');
 
-var htmlUglify = new HTMLUglify({salt: 'use the force harry'});
+var htmlUglify = new HTMLUglify();
 
 describe('HTMLUglify', function() {
   describe('#isWhitelisted', function() {
