@@ -11,7 +11,7 @@ Great for HTML emails.
 
 ```javascript
 var HTMLUglify = require('html-uglify');
-var htmlUglify = new HTMLUglify({ salt: 'your-custom-salt', whitelist: ['#noform', '#withform', '.someclass' });
+var htmlUglify = new HTMLUglify({ salt: 'your-custom-salt' });
 var uglified = htmlUglify.process(htmlString);
 ```
 
@@ -27,7 +27,7 @@ You pass an html string to `.process` and it returns the uglified html.
 
 ```javascript
 var HTMLUglify = require('html-uglify');
-var htmlUglify = new HTMLUglify({ salt: 'your-custom-salt', whitelist: [] });
+var htmlUglify = new HTMLUglify({ salt: 'your-custom-salt' });
 var htmlString = "<html><head><style>.some-class { color: red; }</style></head><body><h1 class='some-class'>Hello</h1></body></html>";
 
 var uglified = htmlUglify.process(htmlString);
