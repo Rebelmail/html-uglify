@@ -4,28 +4,27 @@ var assert = require('chai').assert;
 var cheerio = require('cheerio');
 var HTMLUglify = require('../lib/main.js');
 
-var htmlUglify = new HTMLUglify();
+var htmlUglify = new HTMLUglify({salt: 'use the force harry'});
 
 describe('HTMLUglify', function() {
   describe('#isWhitelisted', function() {
+    var whitelist;
+    var htmlUglify;
+
+    beforeEach(function() {
+      whitelist = ['#theid', '.theclass'];
+      htmlUglify = new HTMLUglify({whitelist: whitelist});
+    });
     it('returns true if id is in whitelist', function() {
-      var whitelist = ['#theid'];
-      var htmlUglify = new HTMLUglify({whitelist: whitelist});
       var whitelisted = htmlUglify.isWhitelisted('id', 'theid')
       assert.isTrue(whitelisted);
     });
-
     it('returns false if id is in the whitelist but only checking for classes', function() {
-      var whitelist = ['#theid'];
-      var htmlUglify = new HTMLUglify({whitelist: whitelist});
       var whitelisted = htmlUglify.isWhitelisted('class', 'theid')
       assert.isFalse(whitelisted);
     });
-
     it('returns true if class is in whitelist', function() {
-      var whitelist = ['.theid'];
-      var htmlUglify = new HTMLUglify({whitelist: whitelist});
-      var whitelisted = htmlUglify.isWhitelisted('class', 'theid')
+      var whitelisted = htmlUglify.isWhitelisted('class', 'theclass')
       assert.isTrue(whitelisted);
     });
   });
@@ -205,23 +204,20 @@ describe('HTMLUglify', function() {
       assert.equal(html, '<style>.nx#vy{color: red}</style><div class="nx" id="vy">Welcome to HTML Uglify</div>');
     });
     it('uglifies media query with no name', function() {
-      var htmlUglify = new HTMLUglify();
       var html = htmlUglify.process("<style>@media {.media{ color: red; }}</style><div class='media'>media</div>");
       assert.equal(html, '<style>@media {.xz{ color: red; }}</style><div class="xz">media</div>');
     });
     it('uglifies media queries inside of media queries', function() {
-      var htmlUglify = new HTMLUglify();
       var html = htmlUglify.process("<style>@media screen{@media screen{.media-nested{background:red;}}}</style><div class='media-nested'>media-nested</div>");
       assert.equal(html, '<style>@media screen{@media screen{.xz{background:red;}}}</style><div class="xz">media-nested</div>');
     });
     it('uglifies media queries inside of media queries inside of media queries', function() {
-      var htmlUglify = new HTMLUglify();
       var html = htmlUglify.process("<style>@media screen{@media screen{@media screen{.media-double-nested{background:red;}}}}</style><div class='media-double-nested'>media-double-nested</div>");
       assert.equal(html, '<style>@media screen{@media screen{@media screen{.xz{background:red;}}}}</style><div class="xz">media-double-nested</div>');
     });
     it('uglifies with whitelisting for ids and classes', function() {
       var whitelist = ['#noform', '.withform'];
-      var htmlUglify = new HTMLUglify({whitelist: whitelist});
+      var htmlUglify = new HTMLUglify({salt: 'use the force harry', whitelist: whitelist});
       var html = htmlUglify.process("<style>#noform { color: red; } .withform{ color: red } #other{ color: red; }</style><div id='noform' class='noform'>noform</div><div class='withform'>withform</div><div id='other'>other</div>");
       assert.equal(html, '<style>#noform { color: red; } .withform{ color: red } #xz{ color: red; }</style><div id="noform" class="wk">noform</div><div class="withform">withform</div><div id="xz">other</div>');
     });
