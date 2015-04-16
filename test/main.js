@@ -221,6 +221,10 @@ describe('HTMLUglify', function() {
       var html = htmlUglify.process("<style>#noform { color: red; } .withform{ color: red } #other{ color: red; }</style><div id='noform' class='noform'>noform</div><div class='withform'>withform</div><div id='other'>other</div>");
       assert.equal(html, '<style>#noform { color: red; } .withform{ color: red } #xz{ color: red; }</style><div id="noform" class="wk">noform</div><div class="withform">withform</div><div id="xz">other</div>');
     });
+    it('uglifies a class with a ::before', function() {
+      var html = htmlUglify.process("<style>.before::before{color: red}</style><div class='before'>before</div>");
+      assert.equal(html, '<style>.before::before{color: red}</style><div class="nx">before</div>');
+    });
 
   });
 });
