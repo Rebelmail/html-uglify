@@ -11,7 +11,7 @@ Great for HTML emails.
 
 ```javascript
 var HTMLUglify = require('html-uglify');
-var htmlUglify = new HTMLUglify({ salt: 'your-custom-salt', whitelist: ['#noform', '#withform' });
+var htmlUglify = new HTMLUglify({ salt: 'your-custom-salt', whitelist: ['#noform', '#withform', '.someclass' });
 var uglified = htmlUglify.process(htmlString);
 ```
 
