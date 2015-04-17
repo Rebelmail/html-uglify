@@ -43,40 +43,61 @@ describe('HTMLUglify', function() {
       var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>#abe{ color: red; }</style>');
     });
+    it('rewrites an id with the same name as the element', function() {
+      var lookups = { 'id=label': 'ab' };
+      var html = '<style>label#label{ color: blue; }</style>';
+      var $ = cheerio.load(html);
+      var results = htmlUglify.rewriteStyles($, lookups).html();
+      assert.equal(results, '<style>label#ab{ color: blue; }</style>');
+    });
     it('rewrites a for= given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[for=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, "<style>label[for='ab']{ color: blue; }</style>");
+      assert.equal(results, "<style>label[for=ab]{ color: blue; }</style>");
     });
     it('does not rewrite a for= given no lookups', function() {
       var lookups = {};
       var html = '<style>label[for=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, "<style>label[for='email']{ color: blue; }</style>");
+      assert.equal(results, "<style>label[for=email]{ color: blue; }</style>");
     });
     it('rewrites a for= with quotes given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[for="email"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, "<style>label[for='ab']{ color: blue; }</style>");
+      assert.equal(results, '<style>label[for="ab"]{ color: blue; }</style>');
+    });
+    it('rewrites a for= with the same name as the element', function() {
+      var lookups = { 'id=label': 'ab' };
+      var html = '<style>label[for="label"]{ color: blue; }</style>';
+      var $ = cheerio.load(html);
+      var results = htmlUglify.rewriteStyles($, lookups).html();
+      assert.equal(results, '<style>label[for="ab"]{ color: blue; }</style>');
     });
     it('rewrites an id= given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[id=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, '<style>label#ab{ color: blue; }</style>');
+      assert.equal(results, '<style>label[id=ab]{ color: blue; }</style>');
     });
     it('rewrites an id= with quotes given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[id="email"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, '<style>label#ab{ color: blue; }</style>');
+      assert.equal(results, '<style>label[id="ab"]{ color: blue; }</style>');
+    });
+    it('rewrites an id= with quotes and with the same name as the element', function() {
+      var lookups = { 'id=label': 'ab' };
+      var html = '<style>label[id="label"]{ color: blue; }</style>';
+      var $ = cheerio.load(html);
+      var results = htmlUglify.rewriteStyles($, lookups).html();
+      assert.equal(results, '<style>label[id="ab"]{ color: blue; }</style>');
     });
     it('rewrites a class given lookups', function() {
       var lookups = { 'class=email': 'ab' };
@@ -97,7 +118,7 @@ describe('HTMLUglify', function() {
       var html = '<style>form [class=email] { color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, "<style>form [class='ab'] { color: blue; }</style>");
+      assert.equal(results, "<style>form [class=ab] { color: blue; }</style>");
     });
     it('rewrites multi-selector rule', function() {
       var lookups = { 'class=email': 'ab' };
@@ -220,6 +241,10 @@ describe('HTMLUglify', function() {
       var htmlUglify = new HTMLUglify({salt: 'use the force harry', whitelist: whitelist});
       var html = htmlUglify.process("<style>#noform { color: red; } .withform{ color: red } #other{ color: red; }</style><div id='noform' class='noform'>noform</div><div class='withform'>withform</div><div id='other'>other</div>");
       assert.equal(html, '<style>#noform { color: red; } .withform{ color: red } #xz{ color: red; }</style><div id="noform" class="wk">noform</div><div class="withform">withform</div><div id="xz">other</div>');
+    });
+    it('uglifies a class with a ::before', function() {
+      var html = htmlUglify.process("<style>.before::before{color: red}</style><div class='before'>before</div>");
+      assert.equal(html, '<style>.xz::before{color: red}</style><div class="xz">before</div>');
     });
 
   });
