@@ -34,77 +34,77 @@ describe('HTMLUglify', function() {
       var html = '<style>#abe{ color: red; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, '<style>#xz{color:red;}</style>');
+      assert.equal(results, '<style>#xz{ color: red; }</style>');
     });
     it('does not rewrite an id given no lookups', function() {
       var lookups = { };
       var html = '<style>#abe{ color: red; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, '<style>#abe{color:red;}</style>');
+      assert.equal(results, '<style>#abe{ color: red; }</style>');
     });
     it('rewrites a for= given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[for=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, "<style>label[for=ab]{color:blue;}</style>");
+      assert.equal(results, "<style>label[for=ab]{ color: blue; }</style>");
     });
     it('does not rewrite a for= given no lookups', function() {
       var lookups = {};
       var html = '<style>label[for=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, "<style>label[for=email]{color:blue;}</style>");
+      assert.equal(results, "<style>label[for=email]{ color: blue; }</style>");
     });
     it('rewrites a for= with quotes given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[for="email"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, '<style>label[for="ab"]{color:blue;}</style>');
+      assert.equal(results, '<style>label[for="ab"]{ color: blue; }</style>');
     });
     it('rewrites an id= given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[id=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, '<style>label[id=ab]{color:blue;}</style>');
+      assert.equal(results, '<style>label[id=ab]{ color: blue; }</style>');
     });
     it('rewrites an id= with quotes given lookups', function() {
       var lookups = { 'id=email': 'ab' };
       var html = '<style>label[id="email"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, '<style>label[id="ab"]{color:blue;}</style>');
+      assert.equal(results, '<style>label[id="ab"]{ color: blue; }</style>');
     });
     it('rewrites a class given lookups', function() {
       var lookups = { 'class=email': 'ab' };
       var html = '<style>label.email{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, '<style>label.ab{color:blue;}</style>');
+      assert.equal(results, '<style>label.ab{ color: blue; }</style>');
     });
     it('rewrites a class with the same name as the element', function() {
       var lookups = { 'class=label': 'ab' };
       var html = '<style>label.label{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, '<style>ab.label{color:blue;}</style>');
+      assert.equal(results, '<style>ab.label{ color: blue; }</style>');
     });
     it('rewrites a class= given lookups', function() {
       var lookups = { 'class=email': 'ab' };
       var html = '<style>form [class=email] { color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, "<style>form [class=ab]{color:blue;}</style>");
+      assert.equal(results, "<style>form [class=ab] { color: blue; }</style>");
     });
     it('rewrites multi-selector rule', function() {
       var lookups = { 'class=email': 'ab' };
       var html = '<style>label.email, a.email { color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, '<style>label.ab,a.ab{color:blue;}</style>');
+      assert.equal(results, '<style>label.ab, a.email { color: blue; }</style>');
     });
     it('rewrites css media queries', function() {
       var lookups = { 'id=abe': 'wz' };
@@ -112,7 +112,7 @@ describe('HTMLUglify', function() {
       var html = '<style>@media screen and (max-width: 300px) { #abe{ color: red; } }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, '<style>@media screen and (max-width: 300px){#wz{color:red;}}</style>');
+      assert.equal(results, '<style>@media screen and (max-width: 300px) { #wz{ color: red; } }</style>');
     });
     it('rewrites nested css media queries', function() {
       var lookups = { 'id=abe': 'wz' };
@@ -120,7 +120,7 @@ describe('HTMLUglify', function() {
       var html = '<style>@media { @media screen and (max-width: 300px) { #abe{ color: red; } } }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, '<style>@media {@media screen and (max-width: 300px){#wz{color:red;}}}</style>');
+      assert.equal(results, '<style>@media { @media screen and (max-width: 300px) { #wz{ color: red; } } }</style>');
     });
   });
 
@@ -190,16 +190,16 @@ describe('HTMLUglify', function() {
   describe('#process', function() {
     it('uglifies style and html', function() {
       var html = htmlUglify.process("<style>.demo_class#andID{color: red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglify</div>");
-      assert.equal(html, '<style>.wk#xz{color:red;}</style><div class="wk" id="xz">Welcome to HTML Uglify</div>');
+      assert.equal(html, '<style>.wk#xz{color: red}</style><div class="wk" id="xz">Welcome to HTML Uglify</div>');
     });
     it('uglifies differently with a different salt', function() {
       var htmlUglify = new HTMLUglify({salt: 'other'});
       var html = htmlUglify.process("<style>.demo_class#andID{color: red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglify</div>");
-      assert.equal(html, '<style>.nx#vy{color:red;}</style><div class="nx" id="vy">Welcome to HTML Uglify</div>');
+      assert.equal(html, '<style>.nx#vy{color: red}</style><div class="nx" id="vy">Welcome to HTML Uglify</div>');
     });
     it('uglifies media query with no name', function() {
       var html = htmlUglify.process("<style>@media {.media{ color: red; }}</style><div class='media'>media</div>");
-      assert.equal(html, '<style>@media {.xz{color:red;}}</style><div class="xz">media</div>');
+      assert.equal(html, '<style>@media {.xz{ color: red; }}</style><div class="xz">media</div>');
     });
     it('uglifies media queries inside of media queries', function() {
       var html = htmlUglify.process("<style>@media screen{@media screen{.media-nested{background:red;}}}</style><div class='media-nested'>media-nested</div>");
@@ -213,11 +213,11 @@ describe('HTMLUglify', function() {
       var whitelist = ['#noform', '.withform'];
       var htmlUglify = new HTMLUglify({salt: 'use the force harry', whitelist: whitelist});
       var html = htmlUglify.process("<style>#noform { color: red; } .withform{ color: red } #other{ color: red; }</style><div id='noform' class='noform'>noform</div><div class='withform'>withform</div><div id='other'>other</div>");
-      assert.equal(html, '<style>#noform{color:red;}.withform{color:red;}#xz{color:red;}</style><div id="noform" class="wk">noform</div><div class="withform">withform</div><div id="xz">other</div>');
+      assert.equal(html, '<style>#noform { color: red; } .withform{ color: red } #xz{ color: red; }</style><div id="noform" class="wk">noform</div><div class="withform">withform</div><div id="xz">other</div>');
     });
     it('uglifies a class with a ::before', function() {
       var html = htmlUglify.process("<style>.before::before{color: red}</style><div class='before'>before</div>");
-      assert.equal(html, '<style>.xz::before{color:red;}</style><div class="xz">before</div>');
+      assert.equal(html, '<style>.xz::before{color: red}</style><div class="xz">before</div>');
     });
 
   });
