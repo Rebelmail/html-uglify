@@ -18,12 +18,11 @@
   "license": "ISC",
   "dependencies": {
     "cheerio": "^0.19.0",
-    "hashids": "^1.0.1",
-    "postcss": "^4.1.11"
+    "hashids": "^1.0.2",
+    "postcss": "^4.1.16"
   },
   "devDependencies": {
-    "chai": "^2.3.0",
-    "hoek": "^2.14.0",
+    "chai": "^3.2.0",
     "mocha": "^2.2.5"
   },
   "repository": {
