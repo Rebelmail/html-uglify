@@ -12,7 +12,7 @@ describe('HTMLUglify', function() {
     var htmlUglify;
 
     beforeEach(function() {
-      whitelist = ['#theid', '.theclass'];
+      whitelist = ['#theid', '.theclass', '#★', '.★'];
       htmlUglify = new HTMLUglify({whitelist: whitelist});
     });
     it('returns true if id is in whitelist', function() {
@@ -25,6 +25,14 @@ describe('HTMLUglify', function() {
     });
     it('returns true if class is in whitelist', function() {
       var whitelisted = htmlUglify.isWhitelisted('class', 'theclass')
+      assert.isTrue(whitelisted);
+    });
+    it('returns true if id is in whitelist for a unicode character', function() {
+      var whitelisted = htmlUglify.isWhitelisted('id', '★')
+      assert.isTrue(whitelisted);
+    });
+    it('returns true if class is in whitelist for a unicode character', function() {
+      var whitelisted = htmlUglify.isWhitelisted('class', '★')
       assert.isTrue(whitelisted);
     });
   });
