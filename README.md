@@ -9,9 +9,6 @@ Uglify your HTML and CSS for purposes of compression and obfuscation.
 
 Great for HTML emails.
 
-[![BuildStatus](https://travis-ci.org/RebelMail/html-uglify.png?branch=master)](https://travis-ci.org/RebelMail/html-uglify)
-[![NPM version](https://badge.fury.io/js/html-uglify.png)](http://badge.fury.io/js/html-uglify)
-
 ```javascript
 var HTMLUglify = require('html-uglify');
 var htmlUglify = new HTMLUglify({ salt: 'your-custom-salt', whitelist: ['#noform', '#withform', '.someclass'] });
@@ -20,7 +17,7 @@ var uglified = htmlUglify.process(htmlString);
 
 ## Installation
 
-```
+```sh
 npm install html-uglify --save
 ```
 
@@ -39,14 +36,14 @@ var uglified = htmlUglify.process(htmlString);
 ## Contributing
 
 1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
+2. Create your feature branch
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
 ## Running tests
 
-```
+```sh
 npm install
 npm test
 ```
