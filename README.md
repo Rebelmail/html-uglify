@@ -1,5 +1,8 @@
 # html-uglify
 
+[![Build Status](https://travis-ci.org/Rebelmail/html-uglify.svg?branch=master)](https://travis-ci.org/Rebelmail/html-uglify)
+[![NPM version](https://badge.fury.io/js/html-uglify.png)](http://badge.fury.io/js/html-uglify)
+
 ![html-uglify](../master/html-uglify.png?raw=true)
 
 Uglify your HTML and CSS for purposes of compression and obfuscation.
