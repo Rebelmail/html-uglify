@@ -16,24 +16,44 @@ describe('HTMLUglify', function() {
       htmlUglify = new HTMLUglify({whitelist: whitelist});
     });
     it('returns true if id is in whitelist', function() {
-      var whitelisted = htmlUglify.isWhitelisted('id', 'theid')
+      var whitelisted = htmlUglify.isWhitelisted('id', 'theid');
       assert.isTrue(whitelisted);
     });
     it('returns false if id is in the whitelist but only checking for classes', function() {
-      var whitelisted = htmlUglify.isWhitelisted('class', 'theid')
+      var whitelisted = htmlUglify.isWhitelisted('class', 'theid');
       assert.isFalse(whitelisted);
     });
     it('returns true if class is in whitelist', function() {
-      var whitelisted = htmlUglify.isWhitelisted('class', 'theclass')
+      var whitelisted = htmlUglify.isWhitelisted('class', 'theclass');
       assert.isTrue(whitelisted);
     });
     it('returns true if id is in whitelist for a unicode character', function() {
-      var whitelisted = htmlUglify.isWhitelisted('id', '★')
+      var whitelisted = htmlUglify.isWhitelisted('id', '★');
       assert.isTrue(whitelisted);
     });
     it('returns true if class is in whitelist for a unicode character', function() {
-      var whitelisted = htmlUglify.isWhitelisted('class', '★')
+      var whitelisted = htmlUglify.isWhitelisted('class', '★');
       assert.isTrue(whitelisted);
+    });
+  });
+  describe('#checkForCompoundPointer', function() {
+    it('returns undefined when name does not start with the same class', function() {
+      var lookups = {
+        'class=something': 'zzz'
+      };
+      var lookupKey = 'class=othersomething';
+      var pointer = htmlUglify.checkForCompoundPointer(lookups, lookupKey);
+
+      assert.isUndefined;
+    });
+    it('returns the pointer that starts with the same class', function() {
+      var lookups = {
+        'class=something': 'zzz'
+      };
+      var lookupKey = 'class=somethingElse';
+      var pointer = htmlUglify.checkForCompoundPointer(lookups, lookupKey);
+
+      assert.equal(pointer, 'zzzElse');
     });
   });
   describe('#rewriteStyles', function() {
@@ -44,12 +64,12 @@ describe('HTMLUglify', function() {
       var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>#xz{ color: red; }</style>');
     });
-    it('does not rewrite an id given no lookups', function() {
+    it('rewrites an id', function() {
       var lookups = { };
-      var html = '<style>#abe{ color: red; }</style>';
+      var html = '<style>#xz{ color: red; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, '<style>#abe{ color: red; }</style>');
+      assert.equal(results, '<style>#xz{ color: red; }</style>');
     });
     it('rewrites an id with the same name as the element', function() {
       var lookups = { 'id=label': 'ab' };
@@ -65,12 +85,12 @@ describe('HTMLUglify', function() {
       var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, "<style>label[for=ab]{ color: blue; }</style>");
     });
-    it('does not rewrite a for= given no lookups', function() {
+    it('does rewrites a for=', function() {
       var lookups = {};
       var html = '<style>label[for=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
-      assert.equal(results, "<style>label[for=email]{ color: blue; }</style>");
+      assert.equal(results, "<style>label[for=xz]{ color: blue; }</style>");
     });
     it('rewrites a for= with quotes given lookups', function() {
       var lookups = { 'id=email': 'ab' };
@@ -155,7 +175,7 @@ describe('HTMLUglify', function() {
       var html = '<style>@media{.media{background: red}</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($).html();
-      assert.equal(results, '<style>@media{.media{background: red}}</style>');
+      assert.equal(results, '<style>@media{.xz{background: red}}</style>');
     });
   });
 
@@ -225,12 +245,12 @@ describe('HTMLUglify', function() {
   describe('#process', function() {
     it('uglifies style and html', function() {
       var html = htmlUglify.process("<style>.demo_class#andID{color: red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglify</div>");
-      assert.equal(html, '<style>.wk#xz{color: red}</style><div class="wk" id="xz">Welcome to HTML Uglify</div>');
+      assert.equal(html, '<style>.xz#wk{color: red}</style><div class="xz" id="wk">Welcome to HTML Uglify</div>');
     });
     it('uglifies differently with a different salt', function() {
       var htmlUglify = new HTMLUglify({salt: 'other'});
       var html = htmlUglify.process("<style>.demo_class#andID{color: red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglify</div>");
-      assert.equal(html, '<style>.nx#vy{color: red}</style><div class="nx" id="vy">Welcome to HTML Uglify</div>');
+      assert.equal(html, '<style>.vy#nx{color: red}</style><div class="vy" id="nx">Welcome to HTML Uglify</div>');
     });
     it('uglifies media query with no name', function() {
       var html = htmlUglify.process("<style>@media {.media{ color: red; }}</style><div class='media'>media</div>");
@@ -253,6 +273,18 @@ describe('HTMLUglify', function() {
     it('uglifies a class with a ::before', function() {
       var html = htmlUglify.process("<style>.before::before{color: red}</style><div class='before'>before</div>");
       assert.equal(html, '<style>.xz::before{color: red}</style><div class="xz">before</div>');
+    });
+    it('uglifies class attribute selectors', function() {
+      var html = htmlUglify.process('<style>body[yahoo] *[class*=paddingreset] { padding:0 !important; }</style><div class="paddingreset1">paddingreset1</div>');
+      assert.equal(html, '<style>body[yahoo] *[class*=xz] { padding:0 !important; }</style><div class="xz1">paddingreset1</div>');
+    });
+    it('uglifies id attribute selectors', function() {
+      var html = htmlUglify.process('<style>body[yahoo] *[id*=paddingreset] { padding:0 !important; }</style><div id="paddingreset1">paddingreset1</div>');
+      assert.equal(html, '<style>body[yahoo] *[id*=xz] { padding:0 !important; }</style><div id="xz1">paddingreset1</div>');
+    });
+    it('uglifies for attribute selectors', function() {
+      var html = htmlUglify.process('<style>body[yahoo] *[id*=paddingreset] { padding:0 !important; }</style><div for="paddingreset1">paddingreset1</div>');
+      assert.equal(html, '<style>body[yahoo] *[id*=xz] { padding:0 !important; }</style><div for="xz1">paddingreset1</div>');
     });
   });
 });
