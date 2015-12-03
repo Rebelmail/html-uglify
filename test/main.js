@@ -50,7 +50,7 @@ describe('HTMLUglify', function() {
       var lookups = {
         'class=something': 'zzz'
       };
-      var lookupKey = 'class=somethingElse';
+      var lookupKey = 'somethingElse';
       var pointer = htmlUglify.checkForCompoundPointer(lookups, lookupKey);
 
       assert.equal(pointer, 'zzzElse');
@@ -285,6 +285,7 @@ describe('HTMLUglify', function() {
     it('uglifies for attribute selectors', function() {
       var html = htmlUglify.process('<style>body[yahoo] *[id*=paddingreset] { padding:0 !important; }</style><div for="paddingreset1">paddingreset1</div>');
       assert.equal(html, '<style>body[yahoo] *[id*=xz] { padding:0 !important; }</style><div for="xz1">paddingreset1</div>');
+    });
   });
 
   describe('attribute selectors', function() {
@@ -360,3 +361,4 @@ describe('HTMLUglify', function() {
     });
   });
 });
+
