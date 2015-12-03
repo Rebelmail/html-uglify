@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style type="text/css">
+    body { }
+    table {}
+    table td {}
+    @-ms-viewport { }
+
+    #testId {}
+    .testClass {}
+    label[for=testFor] {}
+
+    @media only screen and (max-width: 480px) {
+      *[id=testAttributeId] {}
+      *[id=testAttributeIdSingleQuotes] {}
+      *[id=testAttributeIdDoubleQuotes] {}
+
+      *[class=testAttributeClass] {}
+      *[class=testAttributeClassSingleQuotes] {}
+      *[class=testAttributeClassDoubleQuotes] {}
+
+      *[id*=testAttributeIdAnywhere] {}
+      *[id*=testAttributeIdSingleQuotesAnywhere] {}
+      *[id*=testAttributeIdDoubleQuotesAnywhere] {}
+
+      *[class*=testAttributeClassAnywhere] {}
+      *[class*=testAttributeClassSingleQuotesAnywhere] {}
+      *[class*=testAttributeClassDoubleQuotesAnywhere] {}
+    }
+  </style>
+</head>
+<body>
+  <div id="testId"></div>
+  <div class="testClass"></div>
+  <label for="testFor"></label>
+
+  <div class="testAttributeId"></div>
+  <div class="testAttributeIdSingleQuotes"></div>
+  <div class="testAttributeIdDoubleQuotes"></div>
+
+  <div class="testAttributeClass"></div>
+  <div class="testAttributeClassSingleQuotes"></div>
+  <div class="testAttributeClassDoubleQuotes"></div>
+
+  <div class="ZZZtestAttributeIdAnywhereZZZ"></div>
+  <div class="ZZZtestAttributeIdSingleQuotesAnywhereZZZ"></div>
+  <div class="ZZZtestAttributeIdDoubleQuotesAnywhereZZZ"></div>
+
+  <div class="ZZZtestAttributeClassAnywhereZZZ"></div>
+  <div class="ZZZtestAttributeClassSingleQuotesAnywhereZZZ"></div>
+  <div class="ZZZtestAttributeClassDoubleQuotesAnywhereZZZ"></div>
+</body>
+</html>
