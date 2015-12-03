@@ -285,6 +285,78 @@ describe('HTMLUglify', function() {
     it('uglifies for attribute selectors', function() {
       var html = htmlUglify.process('<style>body[yahoo] *[id*=paddingreset] { padding:0 !important; }</style><div for="paddingreset1">paddingreset1</div>');
       assert.equal(html, '<style>body[yahoo] *[id*=xz] { padding:0 !important; }</style><div for="xz1">paddingreset1</div>');
+  });
+
+  describe('attribute selectors', function() {
+    describe('equal selector', function() {
+      it('uglifies', function() {
+        var html = htmlUglify.process('<style>*[class=test] {}</style><div class="test"></div>');
+        assert.equal(html, '<style>*[class=xz] {}</style><div class="xz"></div>');
+
+        var html = htmlUglify.process('<style>*[id=test] {}</style><div id="test"></div>');
+        assert.equal(html, '<style>*[id=xz] {}</style><div id="xz"></div>');
+
+        var html = htmlUglify.process('<style>*[id=test] {}</style><div for="test"></div>');
+        assert.equal(html, '<style>*[id=xz] {}</style><div for="xz"></div>');
+      });
+    });
+    describe('anywhere selector', function() {
+      it('uglifies in the middle of a string', function() {
+        var html = htmlUglify.process('<style>*[class*=test] {}</style><div class="ZZtestZZ"></div>');
+        assert.equal(html, '<style>*[class*=xz] {}</style><div class="ZZxzZZ"></div>');
+
+        var html = htmlUglify.process('<style>*[id*=test] {}</style><div id="ZZtestZZ"></div>');
+        assert.equal(html, '<style>*[id*=xz] {}</style><div id="ZZxzZZ"></div>');
+
+        var html = htmlUglify.process('<style>*[id*=test] {}</style><div for="ZZtestZZ"></div>');
+        assert.equal(html, '<style>*[id*=xz] {}</style><div for="ZZxzZZ"></div>');
+      });
+
+      it('uglifies at the start of a string', function() {
+        var html = htmlUglify.process('<style>*[class*=test] {}</style><div class="testZZ"></div>');
+        assert.equal(html, '<style>*[class*=xz] {}</style><div class="xzZZ"></div>');
+
+        var html = htmlUglify.process('<style>*[id*=test] {}</style><div id="testZZ"></div>');
+        assert.equal(html, '<style>*[id*=xz] {}</style><div id="xzZZ"></div>');
+
+        var html = htmlUglify.process('<style>*[id*=test] {}</style><div for="testZZ"></div>');
+        assert.equal(html, '<style>*[id*=xz] {}</style><div for="xzZZ"></div>');
+      });
+
+      it('uglifies at the end of a string', function() {
+        var html = htmlUglify.process('<style>*[class*=test] {}</style><div class="ZZtest"></div>');
+        assert.equal(html, '<style>*[class*=xz] {}</style><div class="ZZxz"></div>');
+
+        var html = htmlUglify.process('<style>*[id*=test] {}</style><div id="ZZtest"></div>');
+        assert.equal(html, '<style>*[id*=xz] {}</style><div id="ZZxz"></div>');
+
+        var html = htmlUglify.process('<style>*[id*=test] {}</style><div for="ZZtest"></div>');
+        assert.equal(html, '<style>*[id*=xz] {}</style><div for="ZZxz"></div>');
+      });
+    });
+    describe('begins with selector', function() {
+      it('uglifies at the start of a string', function() {
+        var html = htmlUglify.process('<style>*[class^=test] {}</style><div class="testZZ"></div>');
+        assert.equal(html, '<style>*[class^=xz] {}</style><div class="xzZZ"></div>');
+
+        var html = htmlUglify.process('<style>*[id^=test] {}</style><div id="testZZ"></div>');
+        assert.equal(html, '<style>*[id^=xz] {}</style><div id="xzZZ"></div>');
+
+        var html = htmlUglify.process('<style>*[id^=test] {}</style><div for="testZZ"></div>');
+        assert.equal(html, '<style>*[id^=xz] {}</style><div for="xzZZ"></div>');
+      });
+    });
+    describe('ends with selector', function() {
+      it('uglifies at the end of a string', function() {
+        var html = htmlUglify.process('<style>*[class$=test] {}</style><div class="ZZtest"></div>');
+        assert.equal(html, '<style>*[class$=xz] {}</style><div class="ZZxz"></div>');
+
+        var html = htmlUglify.process('<style>*[id$=test] {}</style><div id="ZZtest"></div>');
+        assert.equal(html, '<style>*[id$=xz] {}</style><div id="ZZxz"></div>');
+
+        var html = htmlUglify.process('<style>*[id$=test] {}</style><div for="ZZtest"></div>');
+        assert.equal(html, '<style>*[id$=xz] {}</style><div for="ZZxz"></div>');
+      });
     });
   });
 });
