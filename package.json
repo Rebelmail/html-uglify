@@ -4,7 +4,8 @@
   "description": "Uglifies an HTML file and its associated CSS for compression. Great for HTML emails!",
   "main": "lib/main.js",
   "scripts": {
-    "test": "mocha test/main.js"
+    "test": "mocha test/main.js",
+    "bench": "node test/benchmark.js"
   },
   "keywords": [
     "html",
@@ -22,6 +23,7 @@
     "postcss-safe-parser": "^1.0.1"
   },
   "devDependencies": {
+    "benchmark": "^1.0.0",
     "chai": "^3.4.1",
     "mocha": "^2.3.4"
   },

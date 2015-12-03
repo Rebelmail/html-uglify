@@ -254,6 +254,5 @@ describe('HTMLUglify', function() {
       var html = htmlUglify.process("<style>.before::before{color: red}</style><div class='before'>before</div>");
       assert.equal(html, '<style>.xz::before{color: red}</style><div class="xz">before</div>');
     });
-
   });
 });
