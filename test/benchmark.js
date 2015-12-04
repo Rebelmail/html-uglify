@@ -4,7 +4,7 @@ var fs = require('fs');
 var Benchmark = require('benchmark');
 var HTMLUglify = require('../lib/main.js');
 
-var suite = new Benchmark.Suite;
+var suite = new Benchmark.Suite();
 var htmlUglify = new HTMLUglify();
 
 console.log('Running benchmark');

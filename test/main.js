@@ -37,21 +37,21 @@ describe('HTMLUglify', function() {
     });
   });
   describe('#checkForCompoundPointer', function() {
-    it('returns undefined when name does not start with the same class', function() {
+    it('returns undefined when name does not contain the same class', function() {
       var lookups = {
         'class=something': 'zzz'
       };
-      var lookupKey = 'class=othersomething';
-      var pointer = htmlUglify.checkForCompoundPointer(lookups, lookupKey);
+      var value = 'other';
+      var pointer = htmlUglify.checkForCompoundPointer(lookups, value);
 
-      assert.isUndefined;
+      assert.isUndefined(pointer);
     });
     it('returns the pointer that starts with the same class', function() {
       var lookups = {
         'class=something': 'zzz'
       };
-      var lookupKey = 'somethingElse';
-      var pointer = htmlUglify.checkForCompoundPointer(lookups, lookupKey);
+      var value = 'somethingElse';
+      var pointer = htmlUglify.checkForCompoundPointer(lookups, value);
 
       assert.equal(pointer, 'zzzElse');
     });
@@ -294,10 +294,10 @@ describe('HTMLUglify', function() {
         var html = htmlUglify.process('<style>*[class=test] {}</style><div class="test"></div>');
         assert.equal(html, '<style>*[class=xz] {}</style><div class="xz"></div>');
 
-        var html = htmlUglify.process('<style>*[id=test] {}</style><div id="test"></div>');
+        html = htmlUglify.process('<style>*[id=test] {}</style><div id="test"></div>');
         assert.equal(html, '<style>*[id=xz] {}</style><div id="xz"></div>');
 
-        var html = htmlUglify.process('<style>*[id=test] {}</style><div for="test"></div>');
+        html = htmlUglify.process('<style>*[id=test] {}</style><div for="test"></div>');
         assert.equal(html, '<style>*[id=xz] {}</style><div for="xz"></div>');
       });
     });
@@ -306,10 +306,10 @@ describe('HTMLUglify', function() {
         var html = htmlUglify.process('<style>*[class*=test] {}</style><div class="ZZtestZZ"></div>');
         assert.equal(html, '<style>*[class*=xz] {}</style><div class="ZZxzZZ"></div>');
 
-        var html = htmlUglify.process('<style>*[id*=test] {}</style><div id="ZZtestZZ"></div>');
+        html = htmlUglify.process('<style>*[id*=test] {}</style><div id="ZZtestZZ"></div>');
         assert.equal(html, '<style>*[id*=xz] {}</style><div id="ZZxzZZ"></div>');
 
-        var html = htmlUglify.process('<style>*[id*=test] {}</style><div for="ZZtestZZ"></div>');
+        html = htmlUglify.process('<style>*[id*=test] {}</style><div for="ZZtestZZ"></div>');
         assert.equal(html, '<style>*[id*=xz] {}</style><div for="ZZxzZZ"></div>');
       });
 
@@ -317,10 +317,10 @@ describe('HTMLUglify', function() {
         var html = htmlUglify.process('<style>*[class*=test] {}</style><div class="testZZ"></div>');
         assert.equal(html, '<style>*[class*=xz] {}</style><div class="xzZZ"></div>');
 
-        var html = htmlUglify.process('<style>*[id*=test] {}</style><div id="testZZ"></div>');
+        html = htmlUglify.process('<style>*[id*=test] {}</style><div id="testZZ"></div>');
         assert.equal(html, '<style>*[id*=xz] {}</style><div id="xzZZ"></div>');
 
-        var html = htmlUglify.process('<style>*[id*=test] {}</style><div for="testZZ"></div>');
+        html = htmlUglify.process('<style>*[id*=test] {}</style><div for="testZZ"></div>');
         assert.equal(html, '<style>*[id*=xz] {}</style><div for="xzZZ"></div>');
       });
 
@@ -328,10 +328,10 @@ describe('HTMLUglify', function() {
         var html = htmlUglify.process('<style>*[class*=test] {}</style><div class="ZZtest"></div>');
         assert.equal(html, '<style>*[class*=xz] {}</style><div class="ZZxz"></div>');
 
-        var html = htmlUglify.process('<style>*[id*=test] {}</style><div id="ZZtest"></div>');
+        html = htmlUglify.process('<style>*[id*=test] {}</style><div id="ZZtest"></div>');
         assert.equal(html, '<style>*[id*=xz] {}</style><div id="ZZxz"></div>');
 
-        var html = htmlUglify.process('<style>*[id*=test] {}</style><div for="ZZtest"></div>');
+        html = htmlUglify.process('<style>*[id*=test] {}</style><div for="ZZtest"></div>');
         assert.equal(html, '<style>*[id*=xz] {}</style><div for="ZZxz"></div>');
       });
     });
@@ -340,10 +340,10 @@ describe('HTMLUglify', function() {
         var html = htmlUglify.process('<style>*[class^=test] {}</style><div class="testZZ"></div>');
         assert.equal(html, '<style>*[class^=xz] {}</style><div class="xzZZ"></div>');
 
-        var html = htmlUglify.process('<style>*[id^=test] {}</style><div id="testZZ"></div>');
+        html = htmlUglify.process('<style>*[id^=test] {}</style><div id="testZZ"></div>');
         assert.equal(html, '<style>*[id^=xz] {}</style><div id="xzZZ"></div>');
 
-        var html = htmlUglify.process('<style>*[id^=test] {}</style><div for="testZZ"></div>');
+        html = htmlUglify.process('<style>*[id^=test] {}</style><div for="testZZ"></div>');
         assert.equal(html, '<style>*[id^=xz] {}</style><div for="xzZZ"></div>');
       });
     });
@@ -352,10 +352,10 @@ describe('HTMLUglify', function() {
         var html = htmlUglify.process('<style>*[class$=test] {}</style><div class="ZZtest"></div>');
         assert.equal(html, '<style>*[class$=xz] {}</style><div class="ZZxz"></div>');
 
-        var html = htmlUglify.process('<style>*[id$=test] {}</style><div id="ZZtest"></div>');
+        html = htmlUglify.process('<style>*[id$=test] {}</style><div id="ZZtest"></div>');
         assert.equal(html, '<style>*[id$=xz] {}</style><div id="ZZxz"></div>');
 
-        var html = htmlUglify.process('<style>*[id$=test] {}</style><div for="ZZtest"></div>');
+        html = htmlUglify.process('<style>*[id$=test] {}</style><div for="ZZtest"></div>');
         assert.equal(html, '<style>*[id$=xz] {}</style><div for="ZZxz"></div>');
       });
     });
