@@ -39,7 +39,7 @@ describe('HTMLUglify', function() {
   describe('#checkForCompoundPointer', function() {
     it('returns undefined when name does not contain the same class', function() {
       var lookups = {
-        'class=something': 'zzz'
+        'class': { 'something': 'zzz' }
       };
       var value = 'other';
       var pointer = htmlUglify.checkForCompoundPointer(lookups, value);
@@ -48,10 +48,10 @@ describe('HTMLUglify', function() {
     });
     it('returns the pointer that starts with the same class', function() {
       var lookups = {
-        'class=something': 'zzz'
+        'class': { 'something': 'zzz' }
       };
       var value = 'somethingElse';
-      var pointer = htmlUglify.checkForCompoundPointer(lookups, value);
+      var pointer = htmlUglify.checkForCompoundPointer(lookups, 'class', value);
 
       assert.equal(pointer, 'zzzElse');
     });
@@ -72,14 +72,14 @@ describe('HTMLUglify', function() {
       assert.equal(results, '<style>#xz{ color: red; }</style>');
     });
     it('rewrites an id with the same name as the element', function() {
-      var lookups = { 'id=label': 'ab' };
+      var lookups = {'id': {'label': 'ab' }};
       var html = '<style>label#label{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label#ab{ color: blue; }</style>');
     });
     it('rewrites a for= given lookups', function() {
-      var lookups = { 'id=email': 'ab' };
+      var lookups = { 'id': {'email': 'ab'} };
       var html = '<style>label[for=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
@@ -93,70 +93,70 @@ describe('HTMLUglify', function() {
       assert.equal(results, "<style>label[for=xz]{ color: blue; }</style>");
     });
     it('rewrites a for= with quotes given lookups', function() {
-      var lookups = { 'id=email': 'ab' };
+      var lookups = { 'id': {'email': 'ab'} };
       var html = '<style>label[for="email"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label[for="ab"]{ color: blue; }</style>');
     });
     it('rewrites a for= with the same name as the element', function() {
-      var lookups = { 'id=label': 'ab' };
+      var lookups = { 'id': { 'label': 'ab' }};
       var html = '<style>label[for="label"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label[for="ab"]{ color: blue; }</style>');
     });
     it('rewrites an id= given lookups', function() {
-      var lookups = { 'id=email': 'ab' };
+      var lookups = { 'id': {'email': 'ab'} };
       var html = '<style>label[id=email]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label[id=ab]{ color: blue; }</style>');
     });
     it('rewrites an id= with quotes given lookups', function() {
-      var lookups = { 'id=email': 'ab' };
+      var lookups = { 'id': { 'email': 'ab' } };
       var html = '<style>label[id="email"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label[id="ab"]{ color: blue; }</style>');
     });
     it('rewrites an id= with quotes and with the same name as the element', function() {
-      var lookups = { 'id=label': 'ab' };
+      var lookups = { 'id': {'label': 'ab'} };
       var html = '<style>label[id="label"]{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label[id="ab"]{ color: blue; }</style>');
     });
     it('rewrites a class given lookups', function() {
-      var lookups = { 'class=email': 'ab' };
+      var lookups = { 'class': { 'email': 'ab' }};
       var html = '<style>label.email{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label.ab{ color: blue; }</style>');
     });
     it('rewrites a class with the same name as the element', function() {
-      var lookups = { 'class=label': 'ab' };
+      var lookups = { 'class': { 'label': 'ab' }};
       var html = '<style>label.label{ color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label.ab{ color: blue; }</style>');
     });
     it('rewrites a class= given lookups', function() {
-      var lookups = { 'class=email': 'ab' };
+      var lookups = { 'class': { 'email': 'ab' }};
       var html = '<style>form [class=email] { color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, "<style>form [class=ab] { color: blue; }</style>");
     });
     it('rewrites multi-selector rule', function() {
-      var lookups = { 'class=email': 'ab' };
+      var lookups = { 'class': { 'email': 'ab' }};
       var html = '<style>label.email, a.email { color: blue; }</style>';
       var $ = cheerio.load(html);
       var results = htmlUglify.rewriteStyles($, lookups).html();
       assert.equal(results, '<style>label.ab, a.ab { color: blue; }</style>');
     });
     it('rewrites css media queries', function() {
-      var lookups = { 'id=abe': 'wz' };
+      var lookups = { 'id': { 'abe': 'wz' }};
 
       var html = '<style>@media screen and (max-width: 300px) { #abe{ color: red; } }</style>';
       var $ = cheerio.load(html);
@@ -164,7 +164,7 @@ describe('HTMLUglify', function() {
       assert.equal(results, '<style>@media screen and (max-width: 300px) { #wz{ color: red; } }</style>');
     });
     it('rewrites nested css media queries', function() {
-      var lookups = { 'id=abe': 'wz' };
+      var lookups = { 'id': { 'abe': 'wz' }};
 
       var html = '<style>@media { @media screen and (max-width: 300px) { #abe{ color: red; } } }</style>';
       var $ = cheerio.load(html);
@@ -244,8 +244,8 @@ describe('HTMLUglify', function() {
 
   describe('#process', function() {
     it('uglifies style and html', function() {
-      var html = htmlUglify.process("<style>.demo_class#andID{color: red}</style><div class='demo_class' id='andID'>Welcome to HTML Uglify</div>");
-      assert.equal(html, '<style>.xz#wk{color: red}</style><div class="xz" id="wk">Welcome to HTML Uglify</div>');
+      var html = htmlUglify.process("<style>.test#other{}</style><p class='test' id='other'></p>");
+      assert.equal(html, '<style>.xz#wk{}</style><p class="xz" id="wk"></p>');
     });
     it('uglifies differently with a different salt', function() {
       var htmlUglify = new HTMLUglify({salt: 'other'});
@@ -285,6 +285,10 @@ describe('HTMLUglify', function() {
     it('uglifies for attribute selectors', function() {
       var html = htmlUglify.process('<style>body[yahoo] *[id*=paddingreset] { padding:0 !important; }</style><div for="paddingreset1">paddingreset1</div>');
       assert.equal(html, '<style>body[yahoo] *[id*=xz] { padding:0 !important; }</style><div for="xz1">paddingreset1</div>');
+    });
+    it('uglifies similar class names but no attribute selectors in use', function() {
+      var html = htmlUglify.process("<style>.test{} .testOther{} .otratest{}</style><p class='test testOther otratest'></p>");
+      assert.equal(html, '<style>.xz{}</style><p class="xz"></p>')
     });
   });
 
