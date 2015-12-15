@@ -415,6 +415,10 @@ describe('HTMLUglify', function() {
       var html = htmlUglify.process("<style>@media screen{@media screen{@media screen{.media-double-nested{background:red;}}}}</style><div class='media-double-nested'>media-double-nested</div>");
       assert.equal(html, '<style>@media screen{@media screen{@media screen{.xz{background:red;}}}}</style><div class="xz">media-double-nested</div>');
     });
+    it('uglifies css inside @supports at-rule', function() {
+      var html = htmlUglify.process("<style>@supports (animation) { .someClass {} }</style><div class='someClass'></div>");
+      assert.equal(html, '<style>@supports (animation) { .xz {} }</style><div class="xz"></div>');
+    });
     it('uglifies with whitelisting for ids and classes', function() {
       var whitelist = ['#noform', '.withform'];
       var htmlUglify = new HTMLUglify({salt: 'use the force harry', whitelist: whitelist});
