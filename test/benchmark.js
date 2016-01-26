@@ -2,18 +2,19 @@
 
 var fs = require('fs');
 var Benchmark = require('benchmark');
-var HTMLUglify = require('../lib/main.js');
+var posthtml = require('posthtml');
+var uglify = require('../lib/main.js');
 
 var suite = new Benchmark.Suite();
-var htmlUglify = new HTMLUglify();
+var htmlUglify = posthtml().use(uglify());
 
 console.log('Running benchmark');
 
 var html = fs.readFileSync('./test/test.html');
 
 suite
-.add('#process', function() {
-   htmlUglify.process(html);
+.add('#process', function(done) {
+  htmlUglify.process(html, { sync: true });
 })
 .on('cycle', function(event) {
   console.log(String(event.target));
