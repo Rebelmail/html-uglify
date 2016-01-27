@@ -128,11 +128,11 @@ describe('HTMLUglify', function() {
       assert.equal(pointer, 'en');
     });
     it('finds a more complex existing pointer', function() {
-      var lookups = { 
-        class: { 
-          test: 'xz', 
-          testOther: 'wk', 
-          otratest: 'en' 
+      var lookups = {
+        class: {
+          test: 'xz',
+          testOther: 'wk',
+          otratest: 'en'
         }
       };
       var pointer = htmlUglify.pointer('class', 'test', lookups);
@@ -524,4 +524,3 @@ describe('HTMLUglify', function() {
     });
   });
 });
-
